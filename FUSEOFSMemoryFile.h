@@ -41,8 +41,8 @@
 	NSMutableDictionary *attrs;
 }
 
-- (void)setAttributes:(NSDictionary *)_attrs;
-- (void)setData:(NSData *)_data;
+- (BOOL)setFileAttributes:(NSDictionary *)_attrs;
+- (void)setFileContents:(NSData *)_data;
 
 @end /* FUSEOFSMemoryFile */
 
