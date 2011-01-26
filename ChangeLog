@@ -1,0 +1,131 @@
+2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: changed layout and renamed every wording of
+	  'directory' into 'container'.
+
+	* FUSEOFSMemoryFolder.[hm]: renamed to FUSEOFSMemoryContainer
+
+	* FUSEOFSMemoryContainer.[hm]: see above
+
+	* FUSEObjectFileSystem.m: minor fix for valueOfExtendedAttribute:...
+
+2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEObjectFileSystem.m: added workaround for a MacFUSE bug which
+	  prevented deleting extended attributes - this triggers an annoying
+	  warning upon startup (we're implementing a deprecated method) which
+	  is totally harmless.
+
+	* NSObject+FUSEOFS.[hm]: added api for dealing with extended
+	  attributes
+
+	* FUSEObjectFileSystem.m: implemented extended attributes functionality
+	
+	* FUSEOFSMemoryObject.[hm]: new class, suiting as (new) abstract base
+	  class for FUSEMemoryFile and FUSEMemoryFolder.
+
+	* FUSEOFSMemoryFile.[hm]: code refactoring
+	
+	* FUSEOFSMemoryFolder.[hm]: code refactoring
+
+2010-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: added -setFileAttributes: api
+
+	* FUSEOFSMemoryFile.[hm]: renamed -setData: to -setFileContents,
+	  renamed -setAttributes: to -setFileAttributes:
+
+	* FUSEOFSMemoryFolder.[hm]: renamed -setAttributes: to
+	  -setFileAttributes:, minor fixes and improvements
+
+	* FUSEObjectFileSystem.m: massively improved debug logging,
+	  improved moveItemAtPath:toPath:error: and fixed a major bug
+	  in writeFileAtPath:...
+
+2010-12-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.m: minor cleanup
+
+	* FUSEOFSFileProxy.m: properly implemented to transparently work for
+	  files and folders
+
+	* FUSEOFSMemoryFile.[hm]: new class which acts as a properly attributed
+	  data object in memory
+
+	* FUSEOFSMemoryFolder.[hm]: new class which acts as a properly
+	  attributed folder object in memory
+
+	* FUSEObjectFileSystem.m: added lots of debugging logs via new
+	  'FUSEObjectFileSystemAccessDebugEnabled' user default. Added
+	  naive implementation of -moveItemAtPath:toPath:error: (works for
+	  file objects, only).
+
+	* FUSEObjectFileSystem.[hm]: header cleanup, added +errorWithCode:
+	  convenience method. Added MacFUSE write methods and all remaining
+	  access methods (i.e. extended attributes) as skeletons. This
+	  needs a lot of improvement in order to become fully functional,
+	  but writing is good enough for iTunesFS, already.
+
+	* NSObject+FUSEOFS.[hm]: added write support (see above)
+
+2009-01-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.m: changed file permissions to be more
+	  liberal (more appropriate for iTunesFS)
+
+2009-01-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEObjectFileSystem.m: fixed legacy bug in willUnmount, no
+	  need to call [fs unmount]... leads to infinite recursion which
+	  apparently broke unmounting.
+
+2008-12-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: new experimental version of FUSEOFS
+	  with slightly different object lookup (provides a context),
+	  removed -isFile but added -isMutable reflection to allow write
+	  methods later on
+
+	* FUSEOFSLookupContext.[hm]: new file, represents a context
+	  used during -lookupPathComponent:inContext:
+
+	* FUSEObjectFileSystem.[hm]: -lookupPath: uses new
+	  FUSEOFSLookupContext during lookup now
+
+	* FUSEOFSFileProxy.h: code cleanup
+
+2008-12-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: added -finderAttributes and
+	  -resourceAttributes
+
+	* FUSEObjectFileSystem.m: properly implemented the new FUSE ObjC API
+
+2008-03-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+FUSEOFS.[hm]: changed icon API
+
+	* FUSEObjectFileSystem.[hm]: according to new API this no
+	  longer subclasses from FUSEFileSystem but is now a delegate to
+	  GMUserFileSystem. There is quite a lot to be done still and several
+	  places need to be revisited.
+	  
+2008-01-09  Dan Villiom Podlaski Christiansen  <dan@villiom.dk>
+
+	* FUSEObjectFileSystem.m: properly set the volicon fuse option
+	  if we have a custom icon for the filesystem
+
+2007-12-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEObjectFileSystem.m: renamed all overridden methods due to upgrade
+	  of FUSEObjC
+
+2007-07-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* added new FUSEOFS subproject. The idea here is to have
+	  a reusable object model for other FUSEObjC based file systems.
+
+2007-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSString+Extensions.m: removed obsolete category methods. Properly
+	  escape ":" (0x35) with similar glyph (0xFF1A)
