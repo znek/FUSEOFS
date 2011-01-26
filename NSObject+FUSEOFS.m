@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2011, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -31,6 +31,7 @@
 */
 
 #import "NSObject+FUSEOFS.h"
+#import <MacFUSE/MacFUSE.h>
 
 @implementation NSObject (FUSEOFS)
 
@@ -87,6 +88,8 @@
 - (NSDictionary *)fileSystemAttributes {
   return nil;
 }
+
+#ifndef NO_OSX_ADDITIONS
 - (NSDictionary *)resourceAttributes {
   NSData *iconData;
   
@@ -104,6 +107,7 @@
   }
   return nil;
 }
+#endif
 
 - (NSData *)iconData {
   return nil;
@@ -182,6 +186,8 @@
   if ([_pc isEqualToString:@"_FinderAttributes"]) return nil;
   return [self objectForKey:_pc];
 }
+
+#ifndef NO_OSX_ADDITIONS
 - (NSDictionary *)finderAttributes {
   id finderAttributes = [self objectForKey:@"_FinderAttributes"];
   if (finderAttributes) {
@@ -203,6 +209,7 @@
 	}
 	return nil;
 }
+#endif
 
 - (NSArray *)containerContents {
   if (![self objectForKey:@"_FinderAttributes"])
@@ -216,3 +223,36 @@
 }
 
 @end /* NSDictionary (FUSEOFS) */
+
+@implementation NSString (FUSEOFS_FSSupport)
+
+- (NSString *)properlyEscapedFSRepresentation {
+  static NSString       *colon     = nil;
+  static NSCharacterSet *escapeSet = nil;
+  
+  NSRange         r;
+  NSMutableString *proper;
+  
+  if (!colon) {
+    const unichar colonChar = 0xFF1A; // 0xFE55
+    colon     = [[NSString alloc] initWithCharacters:&colonChar length:1]; 
+    escapeSet = [[NSCharacterSet characterSetWithCharactersInString:@"/:"]
+                 copy];
+  }
+  
+  // NOTE: we _always_ need to normalize the string into decomposed form!
+  // ref: http://developer.apple.com/qa/qa2001/qa1235.html
+  proper = [[self mutableCopy] autorelease];
+  CFStringNormalize((CFMutableStringRef)proper, kCFStringNormalizationFormD);
+  
+  r = [self rangeOfCharacterFromSet:escapeSet];
+  if (r.location == NSNotFound)
+	  return proper;
+  
+  r.length = [self length] - r.location;
+  [proper replaceOccurrencesOfString:@":" withString:colon options:0 range:r];
+  [proper replaceOccurrencesOfString:@"/" withString:@":"  options:0 range:r];
+  return proper;
+}
+
+@end /* NSString (FUSEOFS_FSSupport) */

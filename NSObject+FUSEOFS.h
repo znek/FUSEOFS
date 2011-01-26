@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2007-2010, Marcus Müller <znek@mulle-kybernetik.com>.
+  Copyright (c) 2007-2011, Marcus Müller <znek@mulle-kybernetik.com>.
   All rights reserved.
 
 
@@ -84,9 +84,12 @@
 
 /* MacOS X _only_ attributes */
 
+#ifndef NO_OSX_ADDITIONS
+
 - (NSDictionary *)finderAttributes;
 - (NSDictionary *)resourceAttributes;
 
+#endif
 
 /* misc */
 
@@ -95,5 +98,11 @@
 - (NSData *)iconData;
 
 @end /* NSObject (FUSEOFS) */
+
+@interface NSString (FUSEOFS_FSSupport)
+
+- (NSString *)properlyEscapedFSRepresentation;
+
+@end /* NSString (FUSEOFS_FSSupport) */
 
 #endif	/* __FUSEOFS_NSObject_FUSEOFS_H */

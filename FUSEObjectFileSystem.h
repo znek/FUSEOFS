@@ -33,6 +33,8 @@
 #ifndef	__FUSEOFS_FUSEObjectFileSystem_H
 #define	__FUSEOFS_FUSEObjectFileSystem_H
 
+#import <Foundation/Foundation.h>
+
 @class GMUserFileSystem;
 
 @interface FUSEObjectFileSystem : NSObject

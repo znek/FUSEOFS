@@ -1,3 +1,14 @@
+2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSString+FUSEOFS.[hm]: removed
+
+	* NSObject+FUSEOFS.[hm]: merged contents from NSString+FUSEOFS.[hm] in
+	  order to make our life easier (keep all extensions in a single place)
+
+	* FUSEObjectFileSystem.[hm]: fixed missing and wrong imports
+
+	* GNUmakefile: adjusted for gnustep-make 2.4.0
+
 2010-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* NSObject+FUSEOFS.[hm]: changed layout and renamed every wording of
