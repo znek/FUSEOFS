@@ -1,5 +1,8 @@
 2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
 
+	* FUSEObjectFileSystem.m, FUSEOFSFileProxy.m, NSObject+FUSEOFS.m: fixes
+	  for GNUstep build
+
 	* NSString+FUSEOFS.[hm]: removed
 
 	* NSObject+FUSEOFS.[hm]: merged contents from NSString+FUSEOFS.[hm] in

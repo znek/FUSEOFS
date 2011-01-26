@@ -32,6 +32,7 @@
 
 #import "FUSEOFSFileProxy.h"
 #import "NSObject+FUSEOFS.h"
+#import <Foundation/NSFileManager.h>
 
 @interface FUSEOFSFileProxy (Private)
 - (NSString *)getRelativePath:(NSString *)_pc;

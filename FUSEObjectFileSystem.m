@@ -31,9 +31,12 @@
 */
 
 #import "FUSEObjectFileSystem.h"
-#import <MacFUSE/GMUserFileSystem.h>
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSLookupContext.h"
+#ifndef NO_OSX_ADDITIONS
+#import <MacFUSE/GMUserFileSystem.h>
+#endif
+#include <fcntl.h>
 
 @interface FUSEObjectFileSystem (Private)
 - (id)lookupPath:(NSString *)_path;
@@ -186,6 +189,8 @@ static NSArray      *emptyArray = nil;
 
 /* optional FUSE read methods */
 
+#ifndef NO_OSX_ADDITIONS
+
 - (NSDictionary *)finderAttributesAtPath:(NSString *)_path 
   error:(NSError **)_err
 {
@@ -197,6 +202,8 @@ static NSArray      *emptyArray = nil;
 {
   return [[self lookupPath:_path] resourceAttributes];
 }
+
+#endif
 
 - (NSDictionary *)attributesOfFileSystemForPath:(NSString *)_path
   error:(NSError **)_err

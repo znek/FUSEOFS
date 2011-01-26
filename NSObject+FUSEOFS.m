@@ -31,7 +31,9 @@
 */
 
 #import "NSObject+FUSEOFS.h"
+#ifndef NO_OSX_ADDITIONS
 #import <MacFUSE/MacFUSE.h>
+#endif
 
 @implementation NSObject (FUSEOFS)
 
@@ -227,6 +229,7 @@
 @implementation NSString (FUSEOFS_FSSupport)
 
 - (NSString *)properlyEscapedFSRepresentation {
+#ifndef NO_OSX_ADDITIONS
   static NSString       *colon     = nil;
   static NSCharacterSet *escapeSet = nil;
   
@@ -253,6 +256,23 @@
   [proper replaceOccurrencesOfString:@":" withString:colon options:0 range:r];
   [proper replaceOccurrencesOfString:@"/" withString:@":"  options:0 range:r];
   return proper;
+
+#else
+
+  static NSCharacterSet *escapeSet = nil;
+  if (!escapeSet) {
+    escapeSet = [[NSCharacterSet characterSetWithCharactersInString:@"/"] copy];
+  }
+
+  NSRange r = [self rangeOfCharacterFromSet:escapeSet];
+  if (r.location == NSNotFound)
+	  return self;
+
+  NSMutableString *proper = [[self mutableCopy] autorelease];
+  r.length = [self length] - r.location;
+  [proper replaceOccurrencesOfString:@"/" withString:@":" options:0 range:r];
+  return proper;
+#endif
 }
 
 @end /* NSString (FUSEOFS_FSSupport) */
