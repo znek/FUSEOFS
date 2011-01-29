@@ -1,3 +1,11 @@
+2011-02-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEOFSAppController.[hm]: new controller class designed to works as
+	  a generic NSApplication delegate in a nib/xib/gorm file suitable
+	  for creating and destroying the associated FUSEObjectFileSystem
+	  subclass. The FUSEObjectFileSystem class to use is determined
+	  via the new "FUSEObjectFileSystemClass" NSUserDefault.
+
 2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEObjectFileSystem.m, FUSEOFSFileProxy.m, NSObject+FUSEOFS.m: fixes
