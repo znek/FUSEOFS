@@ -173,7 +173,7 @@ static NSArray      *emptyArray = nil;
       return fileDict;
   }
   if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@", _cmd, _path, attr);
+    NSLog(@"%@ path:%@ attrs:%@", NSStringFromSelector(_cmd), _path, attr);
   return attr;
 }
 
@@ -224,15 +224,15 @@ static NSArray      *emptyArray = nil;
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
-      NSLog(@"%s path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
-            _cmd, _path, _attrs);
+      NSLog(@"%@ path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
+            NSStringFromSelector(_cmd), _path, _attrs);
     return NO;
   }
   BOOL success = [obj createContainerNamed:[_path lastPathComponent]
                       withAttributes:_attrs];
   if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
-          _cmd, _path, _attrs, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ attrs:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, _attrs, success ? "YES" : "NO");
   return success;
 }
 
@@ -245,15 +245,15 @@ static NSArray      *emptyArray = nil;
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
-      NSLog(@"%s path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
-            _cmd, _path, _attrs);
+      NSLog(@"%@ path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
+            NSStringFromSelector(_cmd), _path, _attrs);
     return NO;
   }
   BOOL success = [obj createFileNamed:[_path lastPathComponent]
                       withAttributes:_attrs];
   if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
-          _cmd, _path, _attrs, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ attrs:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, _attrs, success ? "YES" : "NO");
   return success;
 }
 
@@ -265,16 +265,16 @@ static NSArray      *emptyArray = nil;
   if (_mode == O_RDONLY) {
     BOOL success = ([self lookupPath:_path] != nil);
     if (debugAccess)
-      NSLog(@"%s path:%@ -> [%s]",
-            _cmd, _path, success ? "YES" : "NO");
+      NSLog(@"%@ path:%@ -> [%s]",
+            NSStringFromSelector(_cmd), _path, success ? "YES" : "NO");
     return success;
   }
 
   id   obj     = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   BOOL success = [obj isMutable];
   if (debugAccess)
-    NSLog(@"%s path:%@ -> [%s]",
-          _cmd, _path, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, success ? "YES" : "NO");
   return success;
 }
 
@@ -294,7 +294,8 @@ static NSArray      *emptyArray = nil;
   if (!obj || ![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
-      NSLog(@"%s path:%@ -> [NO] (EACCES / ![obj isMutable])", _cmd, _path);
+      NSLog(@"%@ path:%@ -> [NO] (EACCES / ![obj isMutable])",
+			NSStringFromSelector(_cmd), _path);
     return -1;
   }
 
@@ -303,13 +304,13 @@ static NSArray      *emptyArray = nil;
           withData:data])
   {
     if (debugAccess)
-      NSLog(@"%s path:%@ -> [OK]", _cmd, _path);
+      NSLog(@"%@ path:%@ -> [OK]", NSStringFromSelector(_cmd), _path);
     return _size;
   }
   else {
     if (debugAccess)
-      NSLog(@"%s path:%@ -> [NO] (writeFileNamed:withData: failed)",
-            _cmd, _path);
+      NSLog(@"%@ path:%@ -> [NO] (writeFileNamed:withData: failed)",
+            NSStringFromSelector(_cmd), _path);
     return -1;
   }
 }
@@ -322,15 +323,15 @@ static NSArray      *emptyArray = nil;
   id src = [self lookupPath:_src];
   if (!src) {
     if (debugAccess)
-      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![self lookupPath:_src])",
-            _cmd, _src, _dst);
+      NSLog(@"%@ path:%@ toPath:%@ -> [NO] (![self lookupPath:_src])",
+            NSStringFromSelector(_cmd), _src, _dst);
     return NO;
   }
   id dst = [self lookupPath:[_dst stringByDeletingLastPathComponent]];
   if (!dst) {
     if (debugAccess)
-      NSLog(@"%s path:%@ toPath:%@ -> [NO] (!dst)",
-            _cmd, _src, _dst);
+      NSLog(@"%@ path:%@ toPath:%@ -> [NO] (!dst)",
+            NSStringFromSelector(_cmd), _src, _dst);
     return NO;
   }
 
@@ -341,8 +342,8 @@ static NSArray      *emptyArray = nil;
   if (![dst writeFileNamed:dstName withData:[src fileContents]])
   {
     if (debugAccess)
-      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![dst writeFileNamed:withData:])",
-            _cmd, _src, _dst);
+      NSLog(@"%@ path:%@ toPath:%@ -> [NO] (![dst writeFileNamed:withData:])",
+            NSStringFromSelector(_cmd), _src, _dst);
     return NO;
   }
 
@@ -350,13 +351,14 @@ static NSArray      *emptyArray = nil;
   if (![srcFolder removeItemNamed:[_src lastPathComponent]]) {
     [dst removeItemNamed:[_dst lastPathComponent]];
     if (debugAccess)
-      NSLog(@"%s path:%@ toPath:%@ -> [NO] (![srcFolder removeItemNamed:])",
-            _cmd, _src, _dst);
+      NSLog(@"%@ path:%@ toPath:%@ -> [NO] (![srcFolder removeItemNamed:])",
+            NSStringFromSelector(_cmd), _src, _dst);
     return NO;
   }
 
   if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@ -> [YES]", _cmd, _src, _dst);
+    NSLog(@"%@ path:%@ toPath:%@ -> [YES]",
+		  NSStringFromSelector(_cmd), _src, _dst);
   return YES;
 }
 
@@ -367,12 +369,14 @@ static NSArray      *emptyArray = nil;
   if (![obj isMutable]) {
     *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
-      NSLog(@"%s path:%@ -> [NO] (EACCES ![obj isMutable])", _cmd, _path);
+      NSLog(@"%@ path:%@ -> [NO] (EACCES ![obj isMutable])",
+			NSStringFromSelector(_cmd), _path);
     return NO;
   }
   BOOL success = [obj removeItemNamed:[_path lastPathComponent]];
   if (debugAccess)
-    NSLog(@"%s path:%@ -> [%s]", _cmd, _path, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ -> [%s]",
+		  NSStringFromSelector(_cmd), _path, success ? "YES" : "NO");
   return success;
 }
 
@@ -384,7 +388,8 @@ static NSArray      *emptyArray = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@ -> [NO]", _cmd, _src, _dst);
+    NSLog(@"%@ path:%@ toPath:%@ -> [NO]",
+		  NSStringFromSelector(_cmd), _src, _dst);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -396,7 +401,8 @@ static NSArray      *emptyArray = nil;
   error:(NSError **)_err
 {
   if (debugAccess)
-    NSLog(@"%s path:%@ toPath:%@ -> [NO]", _cmd, _src, _dst);
+    NSLog(@"%@ path:%@ toPath:%@ -> [NO]",
+		  NSStringFromSelector(_cmd), _src, _dst);
 
   // TODO: Implement!
   *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
@@ -410,8 +416,8 @@ static NSArray      *emptyArray = nil;
 {
   BOOL success = [(NSObject *)[self lookupPath:_path] setFileAttributes:_attrs];
   if (debugAccess)
-    NSLog(@"%s path:%@ attrs:%@ -> [%s]",
-          _cmd, _path, _attrs, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ attrs:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, _attrs, success ? "YES" : "NO");
 
   return success;
 }
@@ -422,7 +428,7 @@ static NSArray      *emptyArray = nil;
   NSDictionary *extAttrs = [[self lookupPath:_path] extendedFileAttributes];
   NSArray      *names    = extAttrs ? [extAttrs allKeys] : emptyArray;
   if (debugAccess)
-    NSLog(@"%s path:%@ -> %@", _cmd, _path, names);
+    NSLog(@"%@ path:%@ -> %@", NSStringFromSelector(_cmd), _path, names);
   return names;
 }
 
@@ -436,7 +442,7 @@ static NSArray      *emptyArray = nil;
   if (_pos)
     value = [value subdataWithRange:NSMakeRange(_pos, [value length] - _pos)];
   if (debugAccess && 0)
-    NSLog(@"%s path:%@ name:%@ -> %@", _cmd, _path, _name, value);
+    NSLog(@"%@ path:%@ name:%@ -> %@", NSStringFromSelector(_cmd), _path, _name, value);
   return value;
 }
 
@@ -456,8 +462,8 @@ static NSArray      *emptyArray = nil;
     success = NO;
   }
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@ -> [%s]",
-          _cmd, _path, _name, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ name:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, _name, success ? "YES" : "NO");
   return success;
 }
 

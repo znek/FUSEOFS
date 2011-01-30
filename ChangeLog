@@ -1,3 +1,10 @@
+2011-02-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEObjectFileSystem.m: fixed multiple incorrect implicit
+	  SEL == char* assumptions
+
+	* FUSEOFSAppController.m: added a missing #import
+
 2011-02-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEOFSAppController.[hm]: new controller class designed to works as

@@ -32,6 +32,7 @@
 
 #import "FUSEOFSAppController.h"
 #import "FUSEObjectFileSystem.h"
+#import <MacFUSE/MacFUSE.h>
 
 @implementation FUSEOFSAppController
 
