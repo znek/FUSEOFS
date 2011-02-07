@@ -220,7 +220,8 @@ static NSArray      *emptyArray = nil;
 {
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
-    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (_err)
+      *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
       NSLog(@"%@ path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
             NSStringFromSelector(_cmd), _path, _attrs);
@@ -241,7 +242,8 @@ static NSArray      *emptyArray = nil;
 {
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
-    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (_err)
+      *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
       NSLog(@"%@ path:%@ attrs:%@ -> [NO] (EACCESS / ![obj isMutable])",
             NSStringFromSelector(_cmd), _path, _attrs);
@@ -290,7 +292,8 @@ static NSArray      *emptyArray = nil;
 {
   id obj = [self lookupPath:[_path stringByDeletingLastPathComponent]];
   if (!obj || ![obj isMutable]) {
-    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (_err)
+      *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
       NSLog(@"%@ path:%@ -> [NO] (EACCES / ![obj isMutable])",
 			NSStringFromSelector(_cmd), _path);
@@ -365,7 +368,8 @@ static NSArray      *emptyArray = nil;
 
   id obj = [self lookupPath:path];
   if (![obj isMutable]) {
-    *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
+    if (_err)
+      *_err = [FUSEObjectFileSystem errorWithCode:EACCES];
     if (debugAccess)
       NSLog(@"%@ path:%@ -> [NO] (EACCES ![obj isMutable])",
 			NSStringFromSelector(_cmd), _path);
@@ -390,7 +394,8 @@ static NSArray      *emptyArray = nil;
 		  NSStringFromSelector(_cmd), _src, _dst);
 
   // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  if (_err)
+    *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
   return NO;
 }
 
@@ -403,7 +408,8 @@ static NSArray      *emptyArray = nil;
 		  NSStringFromSelector(_cmd), _src, _dst);
 
   // TODO: Implement!
-  *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
+  if (_err)
+    *_err = [FUSEObjectFileSystem errorWithCode:ENOTSUP];
   return NO;
 }
 
@@ -495,8 +501,8 @@ static NSArray      *emptyArray = nil;
     success = NO;
   }
   if (debugAccess)
-    NSLog(@"%s path:%@ name:%@ -> [%s]",
-          _cmd, _path, _name, success ? "YES" : "NO");
+    NSLog(@"%@ path:%@ name:%@ -> [%s]",
+          NSStringFromSelector(_cmd), _path, _name, success ? "YES" : "NO");
   return success;
 }
 

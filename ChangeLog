@@ -1,3 +1,8 @@
+2011-02-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEObjectFileSystem.m: fixed multiple errors with NSError
+	  assignment
+
 2011-02-06  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* GSFUSE/*: added sdk-objc from MacFUSE as a GNUstep port
