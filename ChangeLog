@@ -1,11 +1,24 @@
-2011-02-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+2011-02-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GSFUSE/*: added sdk-objc from MacFUSE as a GNUstep port
+
+	* GNUmakefile: added GSFUSE subproject and minor adjustments
+
+	* FUSESupport.h: new header for directing either to MacFUSE or
+	  GSFUSE
+
+	* FUSEObjectFileSystem.m, FUSEOFSFileProxy.m,
+	  NSObject+FUSEOFS.m, FUSEOFSAppController.m:
+	  ported to GNUstep
+
+2011-01-30  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEObjectFileSystem.m: fixed multiple incorrect implicit
 	  SEL == char* assumptions
 
 	* FUSEOFSAppController.m: added a missing #import
 
-2011-02-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+2011-01-29  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEOFSAppController.[hm]: new controller class designed to works as
 	  a generic NSApplication delegate in a nib/xib/gorm file suitable
@@ -13,7 +26,7 @@
 	  subclass. The FUSEObjectFileSystem class to use is determined
 	  via the new "FUSEObjectFileSystemClass" NSUserDefault.
 
-2011-02-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+2011-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEObjectFileSystem.m, FUSEOFSFileProxy.m, NSObject+FUSEOFS.m: fixes
 	  for GNUstep build

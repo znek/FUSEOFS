@@ -103,7 +103,11 @@
 
 - (NSArray *)containerContents {
   if ([self isContainer])
+#if ! GNUSTEP_BASE_LIBRARY
     return [[self fileManager] contentsOfDirectoryAtPath:self->path error:NULL];
+#else
+  return [[self fileManager] directoryContentsAtPath:self->path];
+#endif
   return nil;
 }
 
@@ -143,8 +147,14 @@
 - (BOOL)removeItemNamed:(NSString *)_name {
   if (![self isContainer]) return NO;
   
+#if ! GNUSTEP_BASE_LIBRARY
   return [[self fileManager] removeItemAtPath:[self getRelativePath:_name]
                              error:NULL];
+#else
+  return [[self fileManager] removeFileAtPath:[self getRelativePath:_name]
+                             handler:nil];
+
+#endif
 }
 
 @end /* FUSEOFSFileProxy */

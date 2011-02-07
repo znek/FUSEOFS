@@ -33,9 +33,7 @@
 #import "FUSEObjectFileSystem.h"
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSLookupContext.h"
-#ifndef NO_OSX_ADDITIONS
-#import <MacFUSE/GMUserFileSystem.h>
-#endif
+#import "FUSESupport.h"
 #include <fcntl.h>
 
 @interface FUSEObjectFileSystem (Private)

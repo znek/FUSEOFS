@@ -31,9 +31,7 @@
 */
 
 #import "NSObject+FUSEOFS.h"
-#ifndef NO_OSX_ADDITIONS
-#import <MacFUSE/MacFUSE.h>
-#endif
+#import "FUSESupport.h"
 
 @implementation NSObject (FUSEOFS)
 
