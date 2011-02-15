@@ -23,6 +23,8 @@ FUSEOFS_INCLUDE_DIRS +=			\
 	-IGSFUSE			\
 
 FUSEOFS_OBJC_FILES +=			\
+	FUSEOFSAppController.m		\
+					\
 	NSObject+FUSEOFS.m		\
 					\
 	FUSEObjectFileSystem.m		\

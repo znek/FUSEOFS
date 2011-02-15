@@ -15,14 +15,15 @@ ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
 endif
 ADDITIONAL_CPPFLAGS += $(shell pkg-config --cflags fuse 2>/dev/null)
+ADDITIONAL_CPPFLAGS += -DFUSE_USE_VERSION=26
 
+ADDITIONAL_CPPFLAGS += -std=c99
 
 SUBPROJECT_NAME = GSFUSE
 
 GSFUSE_OBJC_FILES +=			\
 	GMUserFileSystem.m		\
 	GMDataBackedFileDelegate.m	\
-
 
 
 -include GNUmakefile.preamble

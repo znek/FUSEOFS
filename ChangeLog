@@ -1,3 +1,18 @@
+2011-02-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEOFSAppController.m: workaround for broken
+	  -objectForInfoDictionaryKey: in current GNUstep base
+
+	* FUSEObjectFileSystem.m: ported to GNUstep
+
+	* GNUmakefile: added FUSEOFSAppController
+
+	* GSFUSE/GNUmakefile: added c99 compile time option and properly
+	  provided FUSE define via compiler flag
+
+	* GSFUSE/GMUserFileSystem.m: re-added c99 code in for-loops, improved
+	  GNUstep port which should work now (in theory).
+
 2011-02-07  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEObjectFileSystem.m: fixed multiple errors with NSError

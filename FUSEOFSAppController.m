@@ -33,6 +33,7 @@
 #import "FUSEOFSAppController.h"
 #import "FUSEObjectFileSystem.h"
 #import <AppKit/AppKit.h>
+#import "FUSESupport.h"
 
 @implementation FUSEOFSAppController
 
@@ -53,6 +54,9 @@
 
 - (void)awakeFromNib {
 	NSDictionary *defaults = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSUserDefaults"];
+	// NOTE: sometimes GNUstep is a bit braindead it seems
+	if (!defaults)
+		defaults = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"NSUserDefaults"];
 	if (defaults)
 		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }

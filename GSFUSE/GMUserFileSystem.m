@@ -36,7 +36,6 @@
 //
 #import "GMUserFileSystem.h"
 
-#define FUSE_USE_VERSION 26
 #include <fuse.h>
 #ifndef NO_OSX_ADDITIONS
 #include <fuse/fuse_darwin.h>
@@ -219,8 +218,7 @@ typedef enum {
     @selector(readFileAtPath:fileDelegate:buffer:size:offset:error:),
     @selector(writeFileAtPath:fileDelegate:buffer:size:offset:error:),
   };
-  int i;
-  for (i = 0; i < sizeof(deprecatedMethods)/sizeof(deprecatedMethods[0]); ++i) {
+  for (int i = 0; i < sizeof(deprecatedMethods)/sizeof(deprecatedMethods[0]); ++i) {
     SEL sel = deprecatedMethods[i];
     if ([delegate_ respondsToSelector:sel]) {
       NSLog(@"*** WARNING: GMUserFileSystem delegate implements deprecated "
@@ -363,8 +361,7 @@ typedef enum {
     detachNewThread:(BOOL)detachNewThread {
   [internal_ setMountPath:mountPath];
   NSMutableArray* optionsCopy = [NSMutableArray array];
-  int i;
-  for (i = 0; i < [options count]; ++i) {
+  for (int i = 0; i < [options count]; ++i) {
     NSString* option = [options objectAtIndex:i];
     if ([option caseInsensitiveCompare:@"rdonly"] == NSOrderedSame ||
         [option caseInsensitiveCompare:@"ro"] == NSOrderedSame) {
@@ -410,12 +407,16 @@ static const int kMaxWaitForMountTries = 50;
 static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
 - (void)waitUntilMounted {
   NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-  int i;
-  for (i = 0; i < kMaxWaitForMountTries; ++i) {
+  for (int i = 0; i < kMaxWaitForMountTries; ++i) {
+#ifndef NO_OSX_ADDITIONS
     UInt32 handShakeComplete = 0;
     int ret = ioctl(fuse_device_fd_np([[internal_ mountPath] UTF8String]), 
                     FUSEDEVIOCGETHANDSHAKECOMPLETE, 
                     &handShakeComplete);
+#else
+    UInt32 handShakeComplete = 1;
+		int ret = 0;
+#endif /* NO_OSX_ADDITIONS */
     if (ret == 0 && handShakeComplete) {
       [internal_ setStatus:GMUserFileSystem_MOUNTED];
       
@@ -1257,8 +1258,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
     // don't provide their own ._ file and they have a custom icon, then we'll
     // add the ._ file to the directory contents.
     NSMutableSet* fullContents = [NSMutableSet setWithArray:contents];
-    int i;
-    for (i = 0; i < [contents count]; ++i) {
+    for (int i = 0; i < [contents count]; ++i) {
       NSString* name = [contents objectAtIndex:i];
       if ([name hasPrefix:@"._"]) {
         continue;  // Skip over any AppleDouble that they provide.
@@ -2098,9 +2098,11 @@ static void* fusefm_init(struct fuse_conn_info* conn) {
   }
   @catch (id exception) { }
 
+#ifndef NO_OSX_ADDITIONS
   if ([fs enableExtendedTimes]) {
     FUSE_ENABLE_XTIMES(conn);
   }
+#endif
 #if 0  // TODO: Remove #if 0 if/when setvolname is supported.
   if ([fs enableSetVolumeName]) {
     FUSE_ENABLE_SETVOLNAME(conn);
@@ -2395,8 +2397,7 @@ static struct fuse_operations fusefm_oper = {
         BOOL isDirectoryRemoved = NO;
         static const int kWaitForDeadFSTimeoutSeconds = 5;
         struct stat stat_buf;
-        int i;
-        for (i = 0; i < 2 * kWaitForDeadFSTimeoutSeconds; ++i) {
+        for (int i = 0; i < 2 * kWaitForDeadFSTimeoutSeconds; ++i) {
           usleep(500000);  // .5 seconds
           rc = stat([[internal_ mountPath] UTF8String], &stat_buf);
           if (rc != 0 && errno == ENOENT) {
@@ -2479,8 +2480,7 @@ static struct fuse_operations fusefm_oper = {
   if (shouldForeground) {
     [arguments addObject:@"-f"];  // Forground rather than daemonize.
   }
-  int i;
-  for (i = 0; i < [options count]; ++i) {
+  for (int i = 0; i < [options count]; ++i) {
     NSString* option = [options objectAtIndex:i];
     if ([option length] > 0) {
       [arguments addObject:[NSString stringWithFormat:@"-o%@",option]];
@@ -2492,8 +2492,7 @@ static struct fuse_operations fusefm_oper = {
   // Start Fuse Main
   int argc = [arguments count];
   const char* argv[argc];
-  int count;
-  for (i = 0, count = [arguments count]; i < count; i++) {
+  for (int i = 0, count = [arguments count]; i < count; i++) {
     NSString* argument = [arguments objectAtIndex:i];
     argv[i] = strdup([argument UTF8String]);  // We'll just leak this for now.
   }

@@ -471,6 +471,8 @@ static NSArray      *emptyArray = nil;
   return success;
 }
 
+#ifndef NO_OSX_ADDITIONS
+
 // NOTE: workaround for a bug in MacFUSE...
 // GMUserFileSystem.m:1589 tests this selector instead of
 // removeExtendedAttribute:ofItemAtPath:error:
@@ -487,6 +489,8 @@ static NSArray      *emptyArray = nil;
                options:_options
                error:_err];
 }
+
+#endif
 
 - (BOOL)removeExtendedAttribute:(NSString *)_name
   ofItemAtPath:(NSString *)_path
@@ -509,8 +513,7 @@ static NSArray      *emptyArray = nil;
 /* FUSE helpers */
 
 - (NSArray *)fuseOptions {
-  NSMutableArray *os    = [NSMutableArray array];
-  NSString *volIconPath = [[self rootObject] iconFileForPath:@"/"];
+  NSMutableArray *os = [NSMutableArray array];
 
 #if 0
   // TODO: pretty lame, couldn't we set this using reflection on FS mutability?
@@ -520,10 +523,14 @@ static NSArray      *emptyArray = nil;
   // don't let FUSE cache anything for us
   [os addObject:@"direct_io"];
 
+#ifndef NO_OSX_ADDITIONS
+  NSString *volIconPath = [[self rootObject] iconFileForPath:@"/"];
   if (volIconPath) {
     // this is necessary, unfortunately
     [os addObject:[@"volicon=" stringByAppendingString:volIconPath]];
   }
+#endif
+
   return os;
 }
 
