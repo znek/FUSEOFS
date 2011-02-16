@@ -92,7 +92,9 @@
 }
 
 - (void)didUnmount:(NSNotification *)_notif {
+#ifndef GNU_GUI_LIBRARY
 	[[NSApplication sharedApplication] terminate:nil];
+#endif
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)_sender {

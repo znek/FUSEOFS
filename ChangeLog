@@ -1,3 +1,8 @@
+2011-02-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* FUSEOFSAppController.m: don't terminate NSApp in -didUnmount: when
+	  GNU_GUI_LIBRARY is used as this leads to an instant crash
+
 2011-02-14  Marcus Mueller  <znek@mulle-kybernetik.com>
 
 	* FUSEOFSAppController.m: workaround for broken
