@@ -10,6 +10,8 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
+GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null)
+
 
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
@@ -18,6 +20,11 @@ ADDITIONAL_CPPFLAGS += $(shell pkg-config --cflags fuse 2>/dev/null)
 ADDITIONAL_CPPFLAGS += -DFUSE_USE_VERSION=26
 
 ADDITIONAL_CPPFLAGS += -std=c99
+
+ifeq ($(GNUSTEP_HOST_OS),linux-gnu)
+ADDITIONAL_CPPFLAGS += -DIS_LINUX
+ADDITIONAL_CPPFLAGS += -D_BSD_SOURCE
+endif
 
 SUBPROJECT_NAME = GSFUSE
 

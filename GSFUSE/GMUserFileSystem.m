@@ -41,7 +41,7 @@
 #include <fuse/fuse_darwin.h>
 #endif /* NO_OSX_ADDITIONS */
 
-
+#ifndef IS_LINUX
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -53,6 +53,20 @@
 #include <sys/ioctl.h>
 #include <sys/sysctl.h>
 #include <sys/utsname.h>
+#endif
+
+#ifdef IS_LINUX
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/statfs.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define EFTYPE EINVAL
+#define ENOATTR ENODATA
+#endif
 
 #import <Foundation/Foundation.h>
 
@@ -810,6 +824,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
   NSNumber* nlink = [attributes objectForKey:NSFileReferenceCount];
   stbuf->st_nlink = [nlink longValue];
 
+#ifndef IS_LINUX
   // flags
   NSNumber* flags = [attributes objectForKey:kGMUserFileSystemFileFlagsKey];
   if (flags) {
@@ -825,7 +840,9 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
       stbuf->st_flags |= UF_APPEND;
     }
   }
+#endif
 
+#ifndef IS_LINUX
   // NOTE: We default atime,ctime to mtime if it is provided.
   NSDate* mdate = [attributes objectForKey:NSFileModificationDate];
   if (mdate) {
@@ -857,6 +874,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
     stbuf->st_ctimespec.tv_sec = t_sec;
     stbuf->st_ctimespec.tv_nsec = t_nsec;
   }
+#endif
 
 #if __DARWIN_64_BIT_INO_T
   NSDate* bdate = [attributes objectForKey:NSFileCreationDate];

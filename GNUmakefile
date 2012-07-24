@@ -10,9 +10,14 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
+GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null)
 
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
+endif
+
+ifeq ($(GNUSTEP_HOST_OS),linux-gnu)
+ADDITIONAL_CPPFLAGS += -D_FILE_OFFSET_BITS=64
 endif
 
 
