@@ -12,6 +12,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null)
 
+SUBPROJECT_NAME = GSFUSE
 
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
@@ -27,8 +28,6 @@ ADDITIONAL_CPPFLAGS += -D_BSD_SOURCE
 endif
 
 ADDITIONAL_INCLUDE_DIRS = $(shell pkg-config --cflags-only-I fuse 2>/dev/null)
-
-SUBPROJECT_NAME = GSFUSE
 
 GSFUSE_OBJC_FILES +=			\
 	GMUserFileSystem.m		\
