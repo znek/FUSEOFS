@@ -16,7 +16,7 @@ GNUSTEP_HOST_OS := $(shell gnustep-config --variable=GNUSTEP_HOST_OS 2>/dev/null
 ifneq ($(FOUNDATION_LIB),apple)
 ADDITIONAL_CPPFLAGS += -DNO_OSX_ADDITIONS
 endif
-ADDITIONAL_CPPFLAGS += $(shell pkg-config --cflags fuse 2>/dev/null)
+ADDITIONAL_CPPFLAGS += $(shell pkg-config --cflags-only-other fuse 2>/dev/null)
 ADDITIONAL_CPPFLAGS += -DFUSE_USE_VERSION=26
 
 ADDITIONAL_CPPFLAGS += -std=c99
@@ -25,6 +25,8 @@ ifeq ($(GNUSTEP_HOST_OS),linux-gnu)
 ADDITIONAL_CPPFLAGS += -DIS_LINUX
 ADDITIONAL_CPPFLAGS += -D_BSD_SOURCE
 endif
+
+ADDITIONAL_INCLUDE_DIRS = $(shell pkg-config --cflags-only-I fuse 2>/dev/null)
 
 SUBPROJECT_NAME = GSFUSE
 
