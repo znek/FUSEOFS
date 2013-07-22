@@ -33,6 +33,7 @@ GSFUSE_OBJC_FILES +=			\
 	GMUserFileSystem.m		\
 	GMDataBackedFileDelegate.m	\
 
+GMUserFileSystem.m_FILE_FLAGS = -Wno-unused-variable
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/subproject.make
