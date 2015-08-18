@@ -915,7 +915,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                 toPath:(NSString *)destination
                  error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
+    //NSString* traceinfo = 
       [NSString stringWithFormat:@"%@ -> %@", source, destination];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
@@ -960,7 +960,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                    attributes:(NSDictionary *)attributes
                         error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSMutableString* traceinfo = 
+    //NSMutableString* traceinfo = 
      [NSMutableString stringWithFormat:@"%@ [%@]", path, attributes]; 
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
@@ -978,7 +978,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                 userData:(id *)userData
                    error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = [NSString stringWithFormat:@"%@ [%@]", path, attributes]; 
+    //NSString* traceinfo = [NSString stringWithFormat:@"%@ [%@]", path, attributes]; 
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1002,7 +1002,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                 toPath:(NSString *)otherPath
                  error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = [NSString stringWithFormat:@"%@ -> %@", path, otherPath];
+    //NSString* traceinfo = [NSString stringWithFormat:@"%@ -> %@", path, otherPath];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1020,7 +1020,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
              withDestinationPath:(NSString *)otherPath
                            error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = [NSString stringWithFormat:@"%@ -> %@", path, otherPath];
+    //NSString* traceinfo = [NSString stringWithFormat:@"%@ -> %@", path, otherPath];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }  
   
@@ -1065,7 +1065,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
               userData:(id *)userData 
                  error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = [NSString stringWithFormat:@"%@, mode=0x%x", path, mode];
+    //NSString* traceinfo = [NSString stringWithFormat:@"%@, mode=0x%x", path, mode];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1098,7 +1098,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
     NSData* data = nil;  // Synthesized data that we provide a file delegate for.
 
     // Is it an Icon\r file that we handle?
-    if ([self isDirectoryIconAtPath:path dirPath:nil]) {
+    if ([self isDirectoryIconAtPath:path dirPath:NULL]) {
       data = [NSData data];  // The Icon\r file is empty.
     }
 
@@ -1129,7 +1129,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
 
 - (void)releaseFileAtPath:(NSString *)path userData:(id)userData {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo =
+    //NSString* traceinfo =
       [NSString stringWithFormat:@"%@, userData=%p", path, userData];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
@@ -1153,9 +1153,9 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                offset:(off_t)offset
                 error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo =
-      [NSString stringWithFormat:@"%@, userData=%p, offset=%lld, size=%d", 
-       path, userData, offset, size];
+    //NSString* traceinfo =
+      [NSString stringWithFormat:@"%@, userData=%p, offset=%lld, size=%llu", 
+       path, userData, (long long)offset, (unsigned long long)size];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1189,9 +1189,9 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                 offset:(off_t)offset
                  error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
-      [NSString stringWithFormat:@"%@, userData=%p, offset=%lld, size=%d", 
-       path, userData, offset, size];
+    //NSString* traceinfo = 
+      [NSString stringWithFormat:@"%@, userData=%p, offset=%lld, size=%llu", 
+       path, userData, (long long)offset, (unsigned long long)size];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1242,7 +1242,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                   withItemAtPath:(NSString *)path2
                            error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = [NSString stringWithFormat:@"%@ <-> %@", path1, path2];
+    //NSString* traceinfo = [NSString stringWithFormat:@"%@ <-> %@", path1, path2];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1311,7 +1311,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                                 userData:userData
                                    error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo =
+    //NSString* traceinfo =
       [NSString stringWithFormat:@"%@, userData=%p", path, userData];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
@@ -1481,7 +1481,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
              userData:(id)userData
                 error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
+    //NSString* traceinfo = 
       [NSString stringWithFormat:@"%@, userData=%p, attributes=%@", 
        path, userData, attributes];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
@@ -1516,7 +1516,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
    ofFileSystemAtPath:(NSString *)path
                 error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
+    //NSString* traceinfo = 
       [NSString stringWithFormat:@"%@, attributes=%@", path, attributes];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
@@ -1547,8 +1547,8 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                             position:(off_t)position
                                error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
-      [NSString stringWithFormat:@"%@, name=%@, position=%lld", path, name, position];
+    //NSString* traceinfo = 
+      [NSString stringWithFormat:@"%@, name=%@, position=%lld", path, name, (long long)position];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1602,9 +1602,9 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                      options:(int)options
                        error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
+    //NSString* traceinfo = 
       [NSString stringWithFormat:@"%@, name=%@, position=%lld, options=0x%x", 
-       path, name, position, options];
+       path, name, (long long)position, options];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }
 
@@ -1632,7 +1632,7 @@ static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
                    ofItemAtPath:(NSString *)path
                           error:(NSError **)error {
   if (MACFUSE_OBJC_DELEGATE_ENTRY_ENABLED()) {
-    NSString* traceinfo = 
+    //NSString* traceinfo = 
       [NSString stringWithFormat:@"%@, name=%@", path, name];
     MACFUSE_OBJC_DELEGATE_ENTRY(DTRACE_STRING(traceinfo));
   }  
@@ -1702,7 +1702,7 @@ static int fusefm_fgetattr(const char *path, struct stat *stbuf,
 }
 
 static int fusefm_getattr(const char *path, struct stat *stbuf) {
-  return fusefm_fgetattr(path, stbuf, nil);
+  return fusefm_fgetattr(path, stbuf, NULL);
 }
 
 static int fusefm_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
