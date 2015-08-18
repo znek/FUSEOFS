@@ -1878,7 +1878,7 @@ static int fusefm_readlink(const char *path, char *buf, size_t size)
 }
 
 static int fusefm_getxattr(const char *path, const char *name, char *value,
-                           size_t size, uint32_t position) {
+                           size_t size) {
   NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
   int ret = -ENOATTR;
   
@@ -1887,7 +1887,7 @@ static int fusefm_getxattr(const char *path, const char *name, char *value,
     GMUserFileSystem* fs = [GMUserFileSystem currentFS];
     NSData *data = [fs valueOfExtendedAttribute:[NSString stringWithUTF8String:name]
                                    ofItemAtPath:[NSString stringWithUTF8String:path]
-                                       position:position
+                                       position:0
                                           error:&error];
     if (data != nil) {
       ret = [data length];  // default to returning size of buffer.
@@ -1908,7 +1908,7 @@ static int fusefm_getxattr(const char *path, const char *name, char *value,
 }
 
 static int fusefm_setxattr(const char *path, const char *name, const char *value,
-                           size_t size, int options, uint32_t position) {
+                           size_t size, int options) {
   NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
   int ret = -EPERM;
   @try {
@@ -1917,7 +1917,7 @@ static int fusefm_setxattr(const char *path, const char *name, const char *value
     if ([fs setExtendedAttribute:[NSString stringWithUTF8String:name]
                     ofItemAtPath:[NSString stringWithUTF8String:path]
                            value:[NSData dataWithBytes:value length:size]
-                        position:position
+                        position:0
                            options:options
                            error:&error]) {
       ret = 0;
