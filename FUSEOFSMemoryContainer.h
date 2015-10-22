@@ -40,6 +40,16 @@
 	NSMutableDictionary *folder;
 }
 
+- (id)initWithCapacity:(NSUInteger)_numItems;
+
+- (void)removeAllObjects; // removeAllItems?
+- (NSArray *)allItems;
+- (NSUInteger)count;
+
+- (void)setItem:(id)_item forName:(NSString *)_name;
+
+- (void)addEntriesFromContainer:(id)container;
+
 @end /* FUSEOFSMemoryContainer */
 
 #endif	/* __FUSEOFS_FUSEOFSMemoryContainer_H */

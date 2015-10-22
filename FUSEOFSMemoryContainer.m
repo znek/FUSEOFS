@@ -34,6 +34,11 @@
 #import "NSObject+FUSEOFS.h"
 #import "FUSEOFSMemoryFile.h"
 
+
+@interface FUSEOFSMemoryContainer (Private)
+- (void)touch;
+@end
+
 @implementation FUSEOFSMemoryContainer
 
 static NSArray *emptyArray = nil;
@@ -46,18 +51,42 @@ static NSArray *emptyArray = nil;
   emptyArray = [[NSArray alloc] init];
 }
 
+- (id)initWithCapacity:(NSUInteger)_numItems {
+  self = [self init];
+  if (self) {
+    self->folder = [[NSMutableDictionary alloc] initWithCapacity:_numItems];
+  }
+  return self;
+}
+
 - (void)dealloc {
 	[self->folder release];
 	[super dealloc];
 }
 
-/* private */
+/* public */
 
 - (void)setItem:(id)_item forName:(NSString *)_name {
   if (!self->folder)
     self->folder = [[NSMutableDictionary alloc] initWithCapacity:5];
   [self->folder setObject:_item forKey:_name];
-  // self->attrs does already exist at this point
+  [self touch];
+}
+
+- (NSUInteger)count {
+  return self->folder ? [self->folder count] : 0;
+}
+
+- (NSArray *)allItems {
+  if (!self->folder)
+    return emptyArray;
+
+  return [self->folder allValues];
+}
+
+/* private */
+
+- (void)touch {
   [self->attrs setObject:[NSCalendarDate date] forKey:NSFileModificationDate];
 }
 
@@ -82,7 +111,7 @@ static NSArray *emptyArray = nil;
   if (!self->folder)
     return emptyArray;
 
-  return [self->folder containerContents];
+  return [self->folder allKeys];
 }
 
 /* write */
@@ -127,7 +156,25 @@ static NSArray *emptyArray = nil;
 - (BOOL)removeItemNamed:(NSString *)_name {
   if (![self->folder objectForKey:_name]) return NO;
   [self->folder removeObjectForKey:_name];
+  [self touch];
 	return YES;
+}
+
+- (void)removeAllObjects {
+  [self->folder removeAllObjects];
+  [self touch];
+}
+
+- (void)addEntriesFromContainer:(id)container {
+  NSArray *names = [container containerContents];
+  NSUInteger count = names ? [names count] : 0;
+  if (count == 0)
+    return;
+  for (NSUInteger i = 0; i < count; i++) {
+    NSString *name = [names objectAtIndex:i];
+    id obj = [container lookupPathComponent:name inContext:nil];
+    [self setItem:obj forName:name];
+  }
 }
 
 @end /* FUSEOFSMemoryContainer */
