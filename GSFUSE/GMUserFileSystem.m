@@ -2282,6 +2282,16 @@ static NSDictionary* dictionaryWithAttributes(const struct setattr_x* attrs) {
 }
 #endif /* NO_OSX_ADDITIONS */
 
+static int fusefm_truncate(const char * path, off_t size)
+{
+  return 0;
+}
+
+static int fusefm_ftruncate(const char * path, off_t size, struct fuse_file_info * fi)
+{
+  return 0;
+}
+
 #ifndef NO_OSX_ADDITIONS
 static int fusefm_fsetattr_x(const char* path, struct setattr_x* attrs,
                              struct fuse_file_info* fi) {
@@ -2337,6 +2347,8 @@ static struct fuse_operations fusefm_oper = {
   .rename = fusefm_rename,
   .link = fusefm_link,
   .fsync = fusefm_fsync,
+  .truncate = fusefm_truncate,
+  .ftruncate = fusefm_ftruncate,
 #ifndef NO_OSX_ADDITIONS
   .setvolname = fusefm_setvolname,
   .exchange = fusefm_exchange,
