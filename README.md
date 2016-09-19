@@ -1,7 +1,7 @@
 What is FUSEOFS?
 ================
 
-The idea of FUSEOFS is to have a framework on top of ~~~FUSEObjc~~~ sdk-objc
+The idea of FUSEOFS is to have a framework on top of ~~FUSEObjc~~ sdk-objc
 which removes the need of procedural thinking and tracking of state and context
 in a central object and instead delegating the traversal of a path to a set
 of objects - something I'd call an
@@ -128,8 +128,8 @@ from object to object, instead of using global variables you can use the
 It goes without saying that this way it's almost trivial to implement
 filesystem semantics to any existing backend, i.e. IMAP or LDAP servers.
 
-How does it all blend in with ~~~MacFUSE~~~ OSXFUSE?
-----------------------------------------------------
+How does it all blend in with ~~MacFUSE~~ OSXFUSE?
+--------------------------------------------------
 
 FUSEOFS provides a delegate implementation for sdk-objc, named
 ```FUSEObjectFileSystem``` which does all the lowlevel stuff to map
