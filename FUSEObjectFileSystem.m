@@ -38,6 +38,10 @@
 
 @interface FUSEObjectFileSystem (Private)
 - (id)lookupPath:(NSString *)_path;
+- (BOOL)createFileAtPath:(NSString *)_path
+  attributes:(NSDictionary *)_attrs
+  userData:(id *)_ud
+  error:(NSError **)_err;
 @end
 
 @interface NSObject (FUSEObjectFileSystem_HackHackHack)
@@ -233,6 +237,16 @@ static NSArray      *emptyArray = nil;
     NSLog(@"%@ path:%@ attrs:%@ -> [%s]",
           NSStringFromSelector(_cmd), _path, _attrs, success ? "YES" : "NO");
   return success;
+}
+
+// macFUSE 3.x future compat
+- (BOOL)createFileAtPath:(NSString *)_path
+  attributes:(NSDictionary *)_attrs
+  flags:(int)_flags
+  userData:(id *)_ud
+  error:(NSError **)_err
+{
+  return [self createFileAtPath:_path attributes:_attrs userData:_ud error:_err];
 }
 
 - (BOOL)createFileAtPath:(NSString *)_path
