@@ -61,7 +61,7 @@
 - (BOOL)setFileAttributes:(NSDictionary *)_attrs {
   if (!self->attrs) {
     self->attrs = [[NSMutableDictionary alloc] initWithCapacity:6];
-    [self->attrs setObject:[NSCalendarDate date] forKey:NSFileCreationDate];
+    [self->attrs setObject:[NSDate date] forKey:NSFileCreationDate];
   }
   if (_attrs)
     [self->attrs addEntriesFromDictionary:_attrs];

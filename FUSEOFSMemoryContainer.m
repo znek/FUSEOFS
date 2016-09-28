@@ -87,7 +87,7 @@ static NSArray *emptyArray = nil;
 /* private */
 
 - (void)touch {
-  [self->attrs setObject:[NSCalendarDate date] forKey:NSFileModificationDate];
+  [self->attrs setObject:[NSDate date] forKey:NSFileModificationDate];
 }
 
 /* FUSEOFS */
