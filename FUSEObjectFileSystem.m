@@ -130,8 +130,8 @@ static NSArray      *emptyArray = nil;
 }
 
 - (id)lookupPath:(NSString *)_path {
-  NSArray  *path    = [self pathFromFSPath:_path];
-  unsigned i, count = [path count];
+  NSArray *path = [self pathFromFSPath:_path];
+  NSUInteger i, count = [path count];
   if (!count) return nil;
 
   id obj = [self rootObject];
@@ -147,7 +147,8 @@ static NSArray      *emptyArray = nil;
     if (i < (count - 1))
       [ctx setClientObject:co];
     if (debugLookup)
-      NSLog(@"lookup [#%d, %@] -> %@", i, [path objectAtIndex:i], obj);
+      NSLog(@"lookup [#%lu, %@] -> %@",
+            (unsigned long)i, [path objectAtIndex:i], obj);
   }
   [ctx release];
   return obj;
@@ -320,7 +321,7 @@ static NSArray      *emptyArray = nil;
   {
     if (debugAccess)
       NSLog(@"%@ path:%@ -> [OK]", NSStringFromSelector(_cmd), _path);
-    return _size;
+    return (int)_size;
   }
   else {
     if (debugAccess)
@@ -458,7 +459,7 @@ static NSArray      *emptyArray = nil;
   NSDictionary *extAttrs = [[self lookupPath:_path] extendedFileAttributes];
   NSData       *value    = [extAttrs objectForKey:_name];
   if (_pos)
-    value = [value subdataWithRange:NSMakeRange(_pos, [value length] - _pos)];
+    value = [value subdataWithRange:NSMakeRange((NSUInteger)_pos, (NSUInteger)([value length] - _pos))];
   if (debugAccess && 0)
     NSLog(@"%@ path:%@ name:%@ -> %@", NSStringFromSelector(_cmd), _path, _name, value);
   return value;
