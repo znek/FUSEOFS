@@ -93,7 +93,10 @@
 
 - (void)didUnmount:(NSNotification *)_notif {
 #ifndef GNU_GUI_LIBRARY
-	[[NSApplication sharedApplication] terminate:nil];
+	[[NSApplication sharedApplication]
+	                performSelectorOnMainThread:@selector(terminate:)
+		            withObject:self
+		            waitUntilDone:NO];
 #endif
 }
 
