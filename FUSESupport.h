@@ -34,7 +34,7 @@
 #define	__FUSEOFS_FUSESupport_H
 
 #ifndef NO_OSX_ADDITIONS
-#import <OSXFUSE/OSXFUSE.h>
+#import <macFUSE/macFUSE.h>
 #else
 #import "GSFUSE.h"
 #endif
