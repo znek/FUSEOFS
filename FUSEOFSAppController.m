@@ -83,7 +83,7 @@
 	BOOL autoOpenInFinder = [ud boolForKey:@"AutoOpenInFinder"];
 	if (autoOpenInFinder) {
 		NSString *path = [[_notif userInfo]
-						          objectForKey:kGMUserFileSystemMountPathKey];
+						          objectForKey:@"mountPath"];
 		[[NSWorkspace sharedWorkspace]
                   selectFile:path
                   inFileViewerRootedAtPath:
